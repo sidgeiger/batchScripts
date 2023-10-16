@@ -56,7 +56,7 @@ REM "Outer"
 
 
 :: Recursive function CALL@echo off
-REM Prints out the Fibonacci numbers less than 1000000000 in RECURSIVE way
+REM Prints out: The next Fibonacci number greater or equal 1000000000 is 1134903170.
 set "fst = 0"
 set "fib = 1"
 set "limit = 1000000000"
@@ -75,4 +75,80 @@ if /i %NumberN% LSS %Limit% call:myFibo NumberN,%Number1%,%Limit%
 (ENDLOCAL
    IF "%~1" NEQ "" SET "%~1 = %NumberN%"
 )goto:eof
+
+
+:: Creating a file in Function
+@echo off
+echo "Hello">C:\new.txt
+
+
+:: Writing to file@echo off
+REM writes into file all enviromental variables starting with 'J'
+@echo off
+SET J C:\>C:\paths_J.txt
+
+
+:: Adding text to a file
+REM appends the string after echo to the file speified after >>
+@echo off
+echo "This is some text to add." >> C:\paths_J.txt
+
+
+
+:: Reading from a file (using for loop)
+REM  delims parameter is used to break up the text in the file into different tokens or words. 
+REM Each word or token is then stored in the variable x
+@echo off
+FOR /F "tokens=* delims=" %%x in (new.txt) DO echo %%x
+
+
+
+:: Deleting files
+DEL C:\paths_J.txt
+REM /P Prompts for confirmation before deleting each file.
+REM /F Force deletes of read-only files
+REM /S Deletes specified files from all subdirectories.
+REM /Q Quiet mode, do not ask if ok to delete on global wildcard.
+REM /A Selects files to delete based on attributes.
+REM attributes
+REM 	R Read-only files 
+REM 	S System files
+REM 	H Hidden files
+REM 	A Files ready for archiving - Prefix meaning not
+
+
+:: Rename files
+REN [drive:][path][directoryname1 | filename1] [directoryname2 | filename2]
+
+
+:: Move files
+MOVE [/Y | /-Y] [drive:][path]filename1[,...] destination
+REM destination: Specifies the new location of the file. 
+REM 			 Destination can consist of a drive letter and colon, 
+REM 			 a directory name, or a combination. If you are moving 
+REM 			 only one file, you can also include a filename 
+REM 			 if you want to rename the file when you move it.
+REM 	/Y	Suppresses prompting to confirm you want to overwrite an existing destination file.
+REM 	/-Y Causes prompting to confirm you want to overwrite an existing destination file.
+
+
+
+:: Batch PIPE (|)
+REM [ STDIN | STDOUT ]
+@echo off 
+REM In this example, the contents of the file C:\new.txt are sent to the sort command through the pipe filter.
+TYPE C:\new.txt | sort
+
+REM the below command will first take all the files defined in C:\, 
+REM then using the pipe command, will find all the files with the .txt extension. 
+REM It will then take this output and print it to the file AllText.txt.
+@echo off
+dir C:\ | find "txt" > AllText.txt
+
+REM opens tasklist (Windows Task Manager)
+REM filters out all which are not "Notepad" tasks
+REM all Notepad related process will be listed into tasklist.txt file
+@echo off
+tasklist | find "notepad" > tasklist.txt
+
 
